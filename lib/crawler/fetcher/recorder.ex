@@ -3,17 +3,15 @@ defmodule Crawler.Fetcher.Recorder do
   Records information about each crawl for internal use.
   """
 
-  alias Crawler.Store
-
   @doc """
   Records information about each crawl for internal use.
 
   ## Examples
 
-      iex> Recorder.record(url: "url1", depth: 2)
-      {:ok, %{depth: 3, url: "url1"}}
+      iex> Recorder.record(url: "url1", depth: 2, store: Crawler.Store)
+      {:ok, %{depth: 3, url: "url1", store: Crawler.Store}}
 
-      iex> Recorder.record(url: "url2", depth: 2)
+      iex> Recorder.record(url: "url2", depth: 2, store: Crawler.Store)
       iex> Store.find("url2")
       %Page{url: "url2"}
   """
@@ -29,11 +27,11 @@ defmodule Crawler.Fetcher.Recorder do
   Stores page data in `Crawler.Store.DB` for internal or external consumption.
   """
   def store_page(body, opts) do
-    {:ok, Store.add_page_data(opts[:url], body, opts)}
+    {:ok, opts[:store].add_page_data(opts[:url], body, opts)}
   end
 
   defp store_url(opts) do
-    Store.add(opts[:url])
+    opts[:store].add(opts[:url])
   end
 
   defp store_url_depth(opts) do

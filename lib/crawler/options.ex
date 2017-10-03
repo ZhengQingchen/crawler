@@ -16,6 +16,7 @@ defmodule Crawler.Options do
   @retrier    Crawler.Fetcher.Retrier
   @scraper    Crawler.Scraper
   @parser     Crawler.Parser
+  @store      Crawler.Store
 
   @doc """
   Assigns default option values.
@@ -46,6 +47,7 @@ defmodule Crawler.Options do
       retrier:    retrier(),
       scraper:    scraper(),
       parser:     parser(),
+      store:      store(),
     }, opts)
   end
 
@@ -78,4 +80,5 @@ defmodule Crawler.Options do
   defp retrier,    do: Application.get_env(:crawler, :retrier,    @retrier)
   defp scraper,    do: Application.get_env(:crawler, :scraper,    @scraper)
   defp parser,     do: Application.get_env(:crawler, :parser,     @parser)
+  defp store,      do: Application.get_env(:crawler, :store,      @store)
 end

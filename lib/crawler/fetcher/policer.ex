@@ -3,8 +3,6 @@ defmodule Crawler.Fetcher.Policer do
   Checks a series of conditions to determine whether it is okay to continue.
   """
 
-  alias Crawler.Store
-
   @uri_schemes       ["http", "https"]
   @asset_extra_depth 2
 
@@ -84,7 +82,7 @@ defmodule Crawler.Fetcher.Policer do
   end
 
   defp not_fetched_yet?(opts) do
-    {:not_fetched_yet?, !Store.find(opts[:url])}
+    {:not_fetched_yet?, !opts[:store].find(opts[:url])}
   end
 
   defp perform_url_filtering(opts) do

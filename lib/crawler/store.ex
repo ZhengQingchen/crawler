@@ -13,6 +13,25 @@ defmodule Crawler.Store do
     defstruct [:url, :body, :opts, :processed]
   end
 
+  defmodule Spec do
+    @moduledoc """
+    Spec for defining a store.
+    """
+    @type url  :: String.t
+    @type body :: String.t
+    @type opts :: map
+    @type page :: %Page{url: url, body: body, opts: opts}
+
+    @callback init :: {:ok, pid}
+    @callback find(url :: String.t) :: page | nil
+    @callback find_processed(url :: String.t) :: page | nil
+    @callback add(url :: String.t) :: {:ok, page}
+    @callback add_page_data(url, body, opts) :: term
+    @callback processed(url :: String.t) :: term
+  end
+
+  @behaviour __MODULE__.Spec
+
   @doc """
   Initialises a new `Registry` named `Crawler.Store.DB`.
   """

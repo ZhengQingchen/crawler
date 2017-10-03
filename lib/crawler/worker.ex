@@ -3,7 +3,7 @@ defmodule Crawler.Worker do
   Handles the crawl tasks.
   """
 
-  alias Crawler.{Fetcher, Store, Store.Page}
+  alias Crawler.{Fetcher, Store.Page}
 
   use GenServer
 
@@ -26,7 +26,7 @@ defmodule Crawler.Worker do
     state
     |> Fetcher.fetch()
     |> state[:parser].parse()
-    |> mark_processed()
+    |> mark_processed(state[:store])
 
     {:noreply, state}
   end
@@ -36,6 +36,6 @@ defmodule Crawler.Worker do
     {:noreply, state}
   end
 
-  defp mark_processed({:ok, %Page{url: url}}), do: Store.processed(url)
-  defp mark_processed(_),                      do: nil
+  defp mark_processed({:ok, %Page{url: url}}, store), do: store.processed(url)
+  defp mark_processed(_, _opts),                      do: nil
 end
