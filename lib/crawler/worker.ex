@@ -28,7 +28,7 @@ defmodule Crawler.Worker do
     |> state[:parser].parse()
     |> mark_processed(state[:store])
 
-    {:noreply, state}
+    {:stop, :normal, state}
   end
 
   @doc false
@@ -37,5 +37,5 @@ defmodule Crawler.Worker do
   end
 
   defp mark_processed({:ok, %Page{url: url}}, store), do: store.processed(url)
-  defp mark_processed(_, _opts),                      do: nil
+  defp mark_processed(_, _opts), do: nil
 end
